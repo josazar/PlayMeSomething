@@ -1,0 +1,75 @@
+<!-- v1 -->
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title>
+			Play me something - A Pitch Detection experience by Joseph AZAR
+		</title>
+
+		<!-- LIBs -->
+		<script src="lib/p5.min.js"></script>
+		<script src="lib/p5.sound.min.js"></script>
+		<script src="lib/ml5.min.js"></script>
+		<script src="lib/gsap.min.js"></script>
+		<script src="lib/tone/Tone.js"></script>
+		<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.4" />
+		<meta charset="utf-8" />
+		<link
+			href="https://fonts.googleapis.com/css?family=Gaegu&display=swap"
+			rel="stylesheet"
+		/>
+	</head>
+	<body>
+		<!-- UIs -->
+		<div id="mainUI" class="main-ui">
+			<footer>
+				<script>
+					window.twttr = (function(d, s, id) {
+						var js,
+							fjs = d.getElementsByTagName(s)[0],
+							t = window.twttr || {};
+						if (d.getElementById(id)) return t;
+						js = d.createElement(s);
+						js.id = id;
+						js.src = "https://platform.twitter.com/widgets.js";
+						fjs.parentNode.insertBefore(js, fjs);
+						t._e = [];
+						t.ready = function(f) {
+							t._e.push(f);
+						};
+						return t;
+					})(document, "script", "twitter-wjs");
+				</script>
+				<p>
+					Coding & Visuals by Joseph AZAR<br />
+					<a href="https://www.par-azar.com">www.par-azar.com</a>
+				</p>
+				<a
+					class="twitter-follow-button"
+					href="https://twitter.com/parazar"
+					data-size="large"
+					data-show-count="false"
+				>
+					Follow @parazar
+				</a>
+			</footer>
+		</div>
+
+		<!-- APP SCRIPTS -->
+		<script src="inc/Particles.js"></script>
+		<script src="inc/RayTracer.js"></script>
+		<script src="inc/utils.js"></script>
+		<script src="inc/LineNote.js"></script>
+		<script src="inc/Note.js"></script>
+		<script src="inc/Recorder.js"></script>
+		<script src="inc/Timeline.js"></script>
+		<script src="inc/Timer.js"></script>
+		<script src="inc/Game.js"></script>
+
+		<!-- Main Script -->
+		<script src="sketch.js?v=1.7"></script>
+	</body>
+</html>

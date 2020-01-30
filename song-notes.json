@@ -1,0 +1,86 @@
+{
+	"name": "'The man who sold the world' - David Bowie",
+	"description_home": "🎤 Record your voice or play the guitar 🎸, and I'll play back your melody while playing the piano 🎹.<br><br> Built with Pitch Detection model in <a href='https://ml5js.org/' target='blanck'>ml5.js</a> and <a href='https://p5js.org/' target='blanck'>p5.js</a>. <br><br><span class='note'>🔔 Allow microphone access when prompted by the browser, a lag of a few seconds will occur by the time the microphone is initialized.</span>",
+	"notes": [
+		{
+			"id": "A2",
+			"time": 0,
+			"length": 250
+		},
+		{
+			"id": "A2",
+			"time": 250,
+			"length": 250
+		},
+		{
+			"id": "A2",
+			"time": 500,
+			"length": 250
+		},
+		{
+			"id": "G2",
+			"time": 750,
+			"length": 500
+		},
+		{
+			"id": "A2",
+			"time": 1250,
+			"length": 125
+		},
+		{
+			"id": "Bb2",
+			"time": 1375,
+			"length": 125
+		},
+		{
+			"id": "A2",
+			"time": 1500,
+			"length": 250
+		},
+		{
+			"id": "G2",
+			"time": 1750,
+			"length": 500
+		},
+		{
+			"id": "A2",
+			"time": 2000,
+			"length": 250
+		},
+		{
+			"id": "A2",
+			"time": 2250,
+			"length": 250
+		},
+		{
+			"id": "A2",
+			"time": 2500,
+			"length": 250
+		},
+		{
+			"id": "G2",
+			"time": 2750,
+			"length": 500
+		},
+		{
+			"id": "A2",
+			"time": 3250,
+			"length": 125
+		},
+		{
+			"id": "Bb2",
+			"time": 3375,
+			"length": 125
+		},
+		{
+			"id": "A2",
+			"time": 3550,
+			"length": 250
+		},
+		{
+			"id": "G2",
+			"time": 3800,
+			"length": 500
+		}
+	]
+}

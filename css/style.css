@@ -1,0 +1,303 @@
+html,
+body {
+	font-family: "manjariregular";
+	margin: 0;
+	padding: 0;
+	background-color: #2e2b36;
+	color: #cacde0;
+	box-sizing: border-box;
+}
+canvas {
+	display: block;
+}
+.p5Canvas {
+	margin: 0 auto;
+	height: 80vh;
+}
+/* Fonts */
+@font-face {
+	font-family: "bowlby_one";
+	src: url("/fonts/bowlbyonesc-regular-webfont.woff2") format("woff2"),
+		url("/fonts/bowlbyonesc-regular-webfont.woff") format("woff");
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: "manjariregular";
+	src: url("/fonts/manjari-regular-webfont.woff2") format("woff2"),
+		url("/fonts/manjari-regular-webfont.woff") format("woff");
+	font-weight: normal;
+	font-style: normal;
+}
+/* Typographie */
+a {
+	color: #d13f7e;
+	text-decoration: none;
+}
+p {
+	font-family: "manjariregular", cursive;
+	font-size: 22px;
+	line-height: 1.4em;
+}
+
+/** GAME **/
+.game-points,
+.p-bpm,
+.game-timer {
+	position: absolute;
+	top: 20px;
+	right: 50px;
+	color: #9988b5;
+	font-size: 32pt;
+	margin: 0px;
+}
+.game-points,
+.game-timer {
+	font-family: "bowlby_one";
+}
+.game-timer {
+	top: 30vh;
+	left: 0px;
+	right: 0px;
+	text-align: center;
+	width: 200px;
+	margin: 0 auto;
+
+	display: none;
+}
+.game-timer.active {
+	display: inline;
+}
+/* UI */
+.main-ui {
+	position: absolute;
+	z-index: 100;
+	max-width: 800px;
+	margin: 0 auto;
+	padding: 0px 20px;
+	left: 0px;
+	right: 0px;
+	height: 100vh;
+	overflow: hidden;
+}
+/* HOME */
+.ui-bt-play,
+.ui-bt-back,
+.ui-bt-audioToMidi {
+	cursor: pointer;
+	margin: auto;
+	background-color: transparent;
+	border: 3px solid #cacde0;
+	padding: 8px 40px;
+	color: #cacde0;
+	transition: all 0.15s ease-out;
+}
+.ui-bt-play:hover,
+.ui-bt-back:hover,
+.ui-bt-audioToMidi:hover {
+	background-color: #d13f7e;
+	border-color: #d13f7e;
+	transform: scale(1.12);
+}
+.ui-bt-back {
+	position: absolute;
+	left: 20px;
+	top: 20px;
+	margin: 0;
+}
+.ui-bt-audioToMidi {
+	position: relative;
+	width: 180px;
+	display: block;
+	margin: 30px auto;
+}
+.home .main-title {
+	margin-top: 70px;
+	text-align: center;
+	color: white;
+}
+.home .home-description {
+	display: block;
+	position: relative;
+	margin: auto;
+	margin-top: 70px;
+	max-width: 450px;
+	color: white;
+}
+.note {
+	font-size: 16px;
+	line-height: 1.4em;
+	display: inline-block;
+}
+
+/* VIEW DISPLAY */
+.home .ui-bt-play,
+.inGame .ui-bt-back,
+.record-mode .ui-bt-record {
+	display: block;
+}
+
+.home .ui-bt-back,
+.home .ui-bt-start,
+.home .ui-bt-stop,
+.ui-bt-record,
+.home .p-bpm,
+.home .game-points,
+.home .game-timer,
+.inGame .home-description,
+.inGame .ui-bt-play,
+.inGame .ui-bt-play,
+.inGame .ui-bt-audioToMidi,
+.inGame .main-title {
+	display: none;
+}
+
+/** IN GAME **/
+
+/* BPM */
+.p-bpm {
+	bottom: 180px;
+	top: inherit;
+	left: 0px;
+	right: 0px;
+	margin: 0 auto;
+	text-align: center;
+	font-size: 22px;
+	color: #cacde0;
+}
+
+.ui-bt-start,
+.ui-bt-stop,
+.ui-bt-record {
+	position: absolute;
+	bottom: 50px;
+	left: -100px;
+	right: 0px;
+	margin: 0 auto;
+	width: 80px;
+	height: 80px;
+	border-radius: 80px;
+	border: 1px solid #cacde0;
+	background: transparent url("/images/play.svg") no-repeat left center;
+	background-size: 90px;
+	background-position-x: -250%;
+	cursor: pointer;
+	font-size: 0px;
+	/* transition: all 0.15s ease-out; */
+}
+.record-mode .ui-bt-start,
+.record-mode .ui-bt-stop,
+.record-mode .ui-bt-record {
+	transform: translateX(50px);
+}
+.ui-bt-start:hover {
+	background-size: 110px;
+	background-position-x: -90%;
+}
+.ui-bt-start.active {
+	background-position-x: 320%;
+}
+.ui-bt-start.active:hover {
+	background-position-x: 170%;
+	background-size: 110px;
+}
+.ui-bt-stop {
+	left: 100px;
+	background: transparent;
+}
+.ui-bt-stop:before,
+.ui-bt-record:before {
+	content: "";
+	position: absolute;
+	display: block;
+	width: 25px;
+	height: 25px;
+	border-radius: 5px;
+	left: 0px;
+	right: 0px;
+	margin: auto;
+	top: 0px;
+	bottom: 0px;
+	background-color: #cacde0;
+	transition: all 0.15s ease-out;
+}
+.ui-bt-stop:hover::before {
+	width: 30px;
+	height: 30px;
+}
+.ui-bt-record {
+	left: -300px;
+	background: transparent;
+}
+.ui-bt-record:before {
+	border-radius: 55px;
+}
+.ui-bt-record:hover::before,
+.ui-bt-record.active::before {
+	width: 30px;
+	height: 30px;
+	background-color: #d13f7e;
+}
+
+/* SLIDER */
+.home input[type="range"].bpm-slider {
+	display: none;
+}
+input[type="range"].bpm-slider {
+	display: block;
+	position: absolute;
+	bottom: 160px;
+	left: 0px;
+	right: 0px;
+	margin: 0 auto;
+	-webkit-appearance: none;
+	padding: 0;
+	outline: none;
+	opacity: 0.8;
+	background: #cacde0;
+	box-sizing: border-box;
+	transition: opacity 0.2s;
+	cursor: pointer;
+	border-radius: 5px;
+	height: 7px;
+}
+input[type="range"].bpm-slider:hover {
+	opacity: 1;
+}
+input[type="range"].bpm-slider::-moz-range-thumb {
+	width: 10px;
+	height: 10px;
+	padding: 0.25em; /* largeur du bord */
+	border: 1px solid #888;
+	border-radius: 50%;
+	box-shadow: 0 0 0.5em #fff inset;
+	background: linear-gradient(#888, #fff) content-box,
+		/* le centre */ linear-gradient(-90deg, #888, #ddd) border-box; /* le bord */
+}
+
+/* FOOTER Copyright */
+footer {
+	position: absolute;
+	bottom: 0px;
+	/* left: 0px; */
+	right: 0px;
+	margin: 0 auto;
+	padding: 20px;
+	z-index: 101;
+
+	text-align: right;
+	/* width: 800px;
+	max-width: 800px; */
+	display: block;
+	box-sizing: border-box;
+}
+footer p {
+	font-size: 14px;
+}
+.twitter-follow-button {
+	font-size: 12px;
+}
+.inGame footer {
+	display: none;
+}
