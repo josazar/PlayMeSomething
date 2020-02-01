@@ -13,13 +13,13 @@ class Particle {
 	update() {
 		this.velocity.add(this.acceleration.x, this.acceleration.y);
 		this.location.add(this.velocity.x, this.velocity.y);
-		this.lifespan -= 30;
+		this.lifespan -= 40;
 	}
 
 	draw() {
 		noStroke();
 		fill(random(255), random(255), 300, this.lifespan);
-		circle(this.location.x, this.location.y, 3);
+		circle(this.location.x, this.location.y, 2);
 	}
 
 	isDead() {
@@ -46,7 +46,7 @@ class ParticleSystem {
 		}
 	}
 	addParticles(x, y) {
-		for (let j = 0; j < 5; j++) {
+		for (let j = 0; j < 4; j++) {
 			this.particles.push(new Particle(this.x, this.y));
 		}
 	}

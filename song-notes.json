@@ -1,6 +1,6 @@
 {
 	"name": "'The man who sold the world' - David Bowie",
-	"description_home": "🎤 Record your voice or play the guitar 🎸, and I'll play back your melody while playing the piano 🎹.<br><br> Built with Pitch Detection model in <a href='https://ml5js.org/' target='blanck'>ml5.js</a> and <a href='https://p5js.org/' target='blanck'>p5.js</a>. <br><br><span class='note'>🔔 Allow microphone access when prompted by the browser, a lag of a few seconds will occur by the time the microphone is initialized.</span>",
+	"description_home": "🎤 Record your voice or play the guitar 🎸, and I'll play back your melody while playing the piano 🎹.<br><br> Built with Pitch Detection model in <a href='https://ml5js.org/' target='blanck'>ml5.js</a> and <a href='https://p5js.org/' target='blanck'>p5.js</a>. <br><br><span class='note'>🔔 Allow microphone access when prompted by the browser, a lag of a few seconds will occur by the time the microphone is initialized.<br><br>Do not work properly on Smartphone😢</span>",
 	"notes": [
 		{
 			"id": "A2",

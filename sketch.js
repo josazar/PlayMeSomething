@@ -20,7 +20,7 @@ const CONF = {
 	highFreq: 500,
 	lines: false,
 	modePlay: false,
-	listening: true,
+	listening: false,
 	FxTracerType: 1, // 0: Particles / 1: RayTracer  / 2: Ligne
 	autoplay: true,
 	notes: {
@@ -111,6 +111,7 @@ let stopBtn;
 let pauseBtn;
 let playBtn;
 let recordBtn;
+let lineBtn;
 
 // Main nav
 let startBtn;
@@ -128,7 +129,7 @@ let songJSON;
 let body;
 
 function setup() {
-	console.log("SETUP");
+	console.log("🔔 A pitch detection experimentation by Joseph AZAR");
 	//createCanvas(CONF.canvasW, windowHeight);
 
 	createCanvas(windowWidth, windowHeight);
@@ -157,6 +158,13 @@ function draw() {
 
 	if (GAME.currentView === "inGame") {
 		drawInGame();
+	}
+}
+
+// Permet le fonctionnement de la WebAudio API dans chrome et donc android
+function touchStarted() {
+	if (getAudioContext().state !== "running") {
+		getAudioContext().resume();
 	}
 }
 
@@ -224,13 +232,11 @@ function initGame(gameMode) {
 		freqsY.push(0);
 	}
 
-	if (CONF.FxTracerType == 0)
-		// Systeme de particules
-		ps = new ParticleSystem(width / 2, height / 2);
+	// init le particules system
+	ps = new ParticleSystem(width / 2, height / 2);
 
-	if (CONF.FxTracerType == 1)
-		// Systeme de particules
-		rayTracer = new RayTracerSystem(width / 2, height / 2);
+	// init l'effet de tracé 'sonore'
+	rayTracer = new RayTracerSystem(width / 2, height / 2);
 
 	// Init des lignes de notes
 	lineNotes.length = 0;
@@ -274,6 +280,14 @@ function initGame(gameMode) {
 		backHomeBtn.class("ui-bt-back");
 		backHomeBtn.mousePressed(() => {
 			closeGame();
+		});
+
+		lineBtn = createButton("Fqz");
+		lineBtn.parent("mainUI");
+		lineBtn.class("ui-bt-trigger bt-lines");
+		lineBtn.mousePressed(() => {
+			if (CONF.lines) CONF.lines = false;
+			else CONF.lines = true;
 		});
 		/*pGamePts = createP("0");
 		pGamePts.class("game-points");

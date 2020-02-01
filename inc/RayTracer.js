@@ -3,7 +3,7 @@
 //////////////////////////////////
 class RayTracer {
 	constructor(locx, locy, h) {
-		this.accelX = 15;
+		this.accelX = 5;
 		this.location = createVector(locx, locy);
 		this.velocity = createVector(-this.accelX, 0);
 		this.c1 = color(255, 255, 255, 255);
@@ -24,6 +24,8 @@ class RayTracer {
 		fill(255, random(255), 300, this.lifespan);
 		rectMode(CENTER);
 		rect(this.location.x + this.accelX, this.location.y, this.w, this.h);
+
+		// cercles
 	}
 
 	isDead() {
