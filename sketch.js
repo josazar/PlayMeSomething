@@ -11,6 +11,7 @@ let pitch;
 let mic;
 let _FREQ = 220;
 let _NOFREQ = true;
+let _NEW_NOTE = true;
 let freqsY = [];
 
 // CONF
@@ -20,41 +21,14 @@ const CONF = {
 	highFreq: 500,
 	lines: false,
 	modePlay: false,
-	listening: false,
-	FxTracerType: 1, // 0: Particles / 1: RayTracer  / 2: Ligne
+	listening: true,
+	FxTracerType: 3, // 0: Particles / 1: RayTracer  / 2: Ligne / 3: paint
 	autoplay: true,
 	notes: {
 		showText: true
 	}
 };
-const notesFreq = {
-	// octave 2
-	C2: { freq: "130.81", name: "C" }, // Do
-	Db2: { freq: "138.59", name: "Db" },
-	D2: { freq: "146.83", name: "D" }, // Ré
-	Eb2: { freq: "155.56", name: "Eb" },
-	E2: { freq: "164.81", name: "E" },
-	F2: { freq: "174.61", name: "F" }, // Fa
-	Gb2: { freq: "185", name: "Gb" },
-	G2: { freq: "196", name: "G" },
-	Ab2: { freq: "207.65", name: "Ab" },
-	A2: { freq: "220", name: "A" },
-	Bb2: { freq: "233.08", name: "Bb" },
-	B2: { freq: "246.94", name: "B" },
-	// octave 3
-	C3: { freq: "261.63", name: "C" },
-	Db3: { freq: "277.18", name: "Db" },
-	D3: { freq: "293.66", name: "D" },
-	Eb3: { freq: "311.13", name: "Eb" },
-	E3: { freq: "329.63", name: "E" },
-	F3: { freq: "349.23", name: "F" },
-	Gb3: { freq: "369.99", name: "Gb" },
-	G3: { freq: "392", name: "G" },
-	Ab3: { freq: "415.3", name: "Ab" },
-	A3: { freq: "440", name: "A" },
-	Bb3: { freq: "466.16", name: "Bb" },
-	B3: { freq: "493.88", name: "B" }
-};
+
 const palette = [
 	"142,126,165",
 	"152,135,180",
@@ -64,8 +38,46 @@ const palette = [
 	"119,101,143",
 	"163,101,152",
 	"157,71,134",
-	"152,36,99"
+	"152,36,99",
+	"249,235,113",
+	"135,199,182",
+	"46,164,150",
+	"0,129,125",
+	"93,191,230",
+	"66,203,245",
+	"255,170,212",
+	"231,121,160",
+	"218,42,88",
+	"173,40,95"
 ];
+const notesFreq = {
+	// octave 2
+	C2: { freq: "130.81", name: "C", color: palette[4] }, // Do
+	Db2: { freq: "138.59", name: "Db", color: palette[3] },
+	D2: { freq: "146.83", name: "D", color: palette[2] }, // Ré
+	Eb2: { freq: "155.56", name: "Eb", color: palette[1] },
+	E2: { freq: "164.81", name: "E", color: palette[0] },
+	F2: { freq: "174.61", name: "F", color: palette[18] }, // Fa
+	Gb2: { freq: "185", name: "Gb", color: palette[17] },
+	G2: { freq: "196", name: "G", color: palette[16] },
+	Ab2: { freq: "207.65", name: "Ab", color: palette[15] },
+	A2: { freq: "220", name: "A", color: palette[14] },
+	Bb2: { freq: "233.08", name: "Bb", color: palette[13] },
+	B2: { freq: "246.94", name: "B", color: palette[12] },
+	// octave 3
+	C3: { freq: "261.63", name: "C", color: palette[11] },
+	Db3: { freq: "277.18", name: "Db", color: palette[10] },
+	D3: { freq: "293.66", name: "D", color: palette[9] },
+	Eb3: { freq: "311.13", name: "Eb", color: palette[8] },
+	E3: { freq: "329.63", name: "E", color: palette[7] },
+	F3: { freq: "349.23", name: "F", color: palette[6] },
+	Gb3: { freq: "369.99", name: "Gb", color: palette[5] },
+	G3: { freq: "392", name: "G", color: palette[4] },
+	Ab3: { freq: "415.3", name: "Ab", color: palette[3] },
+	A3: { freq: "440", name: "A", color: palette[2] },
+	Bb3: { freq: "466.16", name: "Bb", color: palette[1] },
+	B3: { freq: "493.88", name: "B", color: palette[0] }
+};
 // Tone
 
 const ToneConf = {
@@ -96,6 +108,8 @@ const ToneConf = {
 
 // Particules System
 let ps;
+// paintBrush system
+let pb;
 // RayTracer System
 let rayTracer;
 // Attributs du jeu
@@ -107,11 +121,8 @@ let pGamePts;
 let pBPM;
 
 // inGame buttons
-let stopBtn;
-let pauseBtn;
-let playBtn;
-let recordBtn;
-let lineBtn;
+let stopBtn, pauseBtn, playBtn, recordBtn, lineBtn;
+let tracerBtn_type_0, tracerBtn_type_1, tracerBtn_type_2, tracerBtn_type_3;
 
 // Main nav
 let startBtn;
@@ -189,7 +200,9 @@ function initHome() {
 		playBtn.mousePressed(() => {
 			// TODO: faire un process pour switcher entre les vues, en temporaire :
 			GAME.mode = "play";
-			initGame(GAME.mode);
+
+			if (CONF.listening && !mic) openMic();
+			else initGame(GAME.mode);
 		});
 	}
 	// bouton Recod Audio To audioToMidiBtn
@@ -198,24 +211,24 @@ function initHome() {
 	audioToMidiBtn.class("ui-bt-audioToMidi");
 	audioToMidiBtn.mousePressed(() => {
 		GAME.mode = "audioToMidi";
-		initGame(GAME.mode);
-		body.addClass("record-mode");
+		if (CONF.listening && !mic) openMic();
+		else initGame(GAME.mode);
 	});
 }
 
-function initGame(gameMode) {
+function openMic() {
 	// on écoute le signal audio du micro
-	if (CONF.listening && !mic) {
-		mic = new p5.AudioIn();
-		mic.start(listening);
-		// on sort du code, c'est la function getPitch qui va lancer le jeu une fois que le model esr chargé.
+	mic = new p5.AudioIn();
+	mic.start(listening); // voir la function listening() qui va charger le model et qui va init Game juste après
+}
 
-		return;
-	}
+function initGame(gameMode) {
+	console.log("Game init...");
 
 	// on enleve la class 'home' du body.
 	body.removeClass("home");
 	body.addClass("inGame");
+	if (gameMode == "audioToMidi") body.addClass("record-mode");
 	if (!mainTimeLine) {
 		mainTimeLine = new Timeline(width);
 		mainRecorder = new Recorder(mainTimeLine);
@@ -238,6 +251,8 @@ function initGame(gameMode) {
 	// init l'effet de tracé 'sonore'
 	rayTracer = new RayTracerSystem(width / 2, height / 2);
 
+	// init l'effet Paint brush
+	pb = new PaintBrushSystem(width / 2, height / 2);
 	// Init des lignes de notes
 	lineNotes.length = 0;
 	for (let [key, value] of Object.entries(notesFreq)) {
@@ -289,6 +304,37 @@ function initGame(gameMode) {
 			if (CONF.lines) CONF.lines = false;
 			else CONF.lines = true;
 		});
+
+		tracerBtn_type_0 = createButton("Particules");
+		tracerBtn_type_0.parent("mainUI");
+		tracerBtn_type_0.class("ui-bt-trigger bt-tracer-type-0");
+		tracerBtn_type_0.mousePressed(() => {
+			CONF.FxTracerType = 0;
+			//tracerBtn_type_0.toggleClass("active");
+		});
+		tracerBtn_type_1 = createButton("Waves");
+		tracerBtn_type_1.parent("mainUI");
+		tracerBtn_type_1.class("ui-bt-trigger bt-tracer-type-1");
+		// Je force cet affichage par défaut :
+		//CONF.FxTracerType = "1";
+		//tracerBtn_type_1.addClass("active");
+		tracerBtn_type_1.mousePressed(() => {
+			CONF.FxTracerType = 1;
+			//tracerBtn_type_1.toggleClass("active");
+		});
+		tracerBtn_type_2 = createButton("Tracer");
+		tracerBtn_type_2.parent("mainUI");
+		tracerBtn_type_2.class("ui-bt-trigger bt-tracer-type-2");
+		tracerBtn_type_2.mousePressed(() => {
+			CONF.FxTracerType = 2;
+		});
+		tracerBtn_type_3 = createButton("Paint brush");
+		tracerBtn_type_3.parent("mainUI");
+		tracerBtn_type_3.class("ui-bt-trigger bt-tracer-type-3");
+		tracerBtn_type_3.mousePressed(() => {
+			CONF.FxTracerType = 3;
+		});
+
 		/*pGamePts = createP("0");
 		pGamePts.class("game-points");
 		pGamePts.parent("mainUI");*/
@@ -343,10 +389,14 @@ function drawInGame() {
 	// MAPPAGE Des Fréquences sur la hauteur du Canvas
 	let currentFreqPosY = getPosYFromFreq(_FREQ.toFixed(2));
 
+	//TODO: faire un smooth entre chaque valeur de _FREQ si _FREQ (Frame-1) - _FREQ (frame courante) > 1
+	//currentFreqPosY = mouseY;
+
 	// Tracer FX
 	if (CONF.FxTracerType == 0) drawParticules(currentFreqPosY);
 	if (CONF.FxTracerType == 2) drawTuneLine(freqsY, currentFreqPosY);
 	if (CONF.FxTracerType == 1) drawFxTracer(currentFreqPosY);
+	if (CONF.FxTracerType == 3) drawPaintBrush(currentFreqPosY);
 
 	// ligne vertical de lecture
 	stroke("#d276a5");
@@ -457,6 +507,29 @@ function drawTuneLine(frequenciesArr, currentFreq) {
 	endShape();
 }
 
+/**
+ * Laisse une trainée comme un pinceau et suis la note 'juste" la plus proche
+ * @param {*} posY
+ */
+function drawPaintBrush(posY) {
+	pb.x = CONF.cursorX;
+	//pb.y = posY;
+	let noteId = closestNote(_FREQ);
+	pb.y = getPosYFromFreq(notesFreq[noteId].freq);
+
+	if (_NEW_NOTE) {
+		pb.newNote(notesFreq[noteId].color);
+		_NEW_NOTE = false;
+	} else if (_NOFREQ) {
+		pb.releasing();
+	} else if (!_NOFREQ) {
+		_NEW_NOTE = true;
+	}
+
+	pb.addParticles();
+	pb.run();
+}
+
 function windowResized() {
 	// if (CONF.canvasW < windowWidth) resizeCanvas(CONF.canvasW, windowHeight);
 	resizeCanvas(windowWidth, windowHeight);
@@ -479,10 +552,16 @@ function listening() {
 		);
 }
 function modelLoaded() {
-	console.log("model loaded");
+	console.log("model loaded, waiting for mic process");
 	pitch.getPitch(gotPitch);
-	console.log("Starting Game...");
-	initGame(GAME.mode);
+	// on attends 5s avant le lancement pour éviter le lag en jeu
+	// spinner loader
+	let spinner = select(".spinner");
+	spinner.addClass("active");
+	setTimeout(() => {
+		initGame(GAME.mode);
+		spinner.removeClass("active");
+	}, 3500);
 }
 
 /**
@@ -505,4 +584,20 @@ function gotPitch(error, frequency) {
 }
 function getPosYFromFreq(freq) {
 	return map(freq, CONF.lowFreq, CONF.highFreq, height, 0);
+}
+
+/***********************************************/
+function closestNote(freq_actual) {
+	let dist = 10000;
+	let i = 0;
+	let closest;
+	for (let line of lineNotes) {
+		// distance qui sépare la fréquences entendu et la ligne
+		if (line.distFrom(freq_actual) < dist) {
+			dist = line.distFrom(freq_actual);
+			closest = i;
+		}
+		i++;
+	}
+	return lineNotes[closest].id;
 }

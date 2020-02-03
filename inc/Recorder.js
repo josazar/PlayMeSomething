@@ -71,22 +71,6 @@ class Recorder {
 		}
 
 		this.rec_PreviousNoteId = this.rec_CurrentNoteId;
-		/***********************************************/
-
-		function closestNote(freq_actual) {
-			let dist = 10000;
-			let i = 0;
-			let closest;
-			for (let line of lineNotes) {
-				// distance qui sépare la fréquences entendu et la ligne
-				if (line.distFrom(freq_actual) < dist) {
-					dist = line.distFrom(freq_actual);
-					closest = i;
-				}
-				i++;
-			}
-			return lineNotes[closest].id;
-		}
 	}
 
 	startRecording() {
